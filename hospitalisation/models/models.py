@@ -18,7 +18,8 @@ class Hospitalisation(models.Model):
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
     # region = fields.Many2one(string='Région',comodel_name='osi.region',readonly=False)
-    # diagnostics 
+    # diagnostics   
+    # print(x)
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
     lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',required=True,)
