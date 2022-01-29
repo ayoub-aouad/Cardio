@@ -9,20 +9,22 @@ class Hospitalisation(models.Model):
     _description = 'Hospitalisation'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Name',required=True)
-    start_date = fields.Datetime(string='Start date',required=True)
-    end_date = fields.Datetime(string='End date')
-    duration = fields.Integer(string='Duration', compute='_compute_days', store=True)
+    name = fields.Char(string='Nom',required=True)
+    start_date = fields.Datetime(string='Date d\'entrée',required=True)
+    end_date = fields.Datetime(string='Date de sortie')
+    duration = fields.Integer(string='Durée de séjour', compute='_compute_days', store=True)
     description = fields.Text(string='Description')
     # patient
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
-    sexe  = fields.Selection(string='Sexe', selection=[('male', 'Male'),('female', 'Female')],related='patient_id.sexe',readonly=False)
+    sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
+    # region = fields.Many2one(string='Région',comodel_name='osi.region',readonly=False)
     # diagnostics 
-    diagnostics_id = fields.Many2one(string='Diagnostic', comodel_name='osi.diagnostics',required=True)
+    diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
     lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',required=True,)
-    room  = fields.Char(string='Room',related='lits_id.room',readonly=False)
-    sector  = fields.Char(string='Sector',related='lits_id.sector', readonly=False)
+    room  = fields.Char(string='Chambre',related='lits_id.room',readonly=False)
+    sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False)
+
     # Stages 
     stage_id = fields.Many2one(string='Stages', comodel_name='osi.stages')
 
@@ -31,6 +33,7 @@ class Hospitalisation(models.Model):
     def _compute_days(self):
         for rec in self:
             fmt = '%Y-%m-%d %H:%M:%S'
+            fnt = '%Y-%m-%d %H:%M:%S.%f'
             if rec.start_date and rec.end_date:
                 start_date = rec.start_date
                 end_date = rec.end_date
@@ -39,42 +42,58 @@ class Hospitalisation(models.Model):
                 d1 = datetime.strptime(start_date, fmt)
                 d2 = datetime.strptime(end_date, fmt)
                 rec.duration = (d2 - d1).days +1
+            elif rec.start_date and  not rec.end_date :
+                start_date = rec.start_date
+                today = datetime.now()
+                start_date = str(start_date)
+                end_date = str(today)
+                d1 = datetime.strptime(start_date, fmt)
+                d2 = datetime.strptime(end_date, fnt)
+                rec.duration = (d2 - d1).days +1
             else:
                 rec.duration = rec.duration
+
 class Diagnostics(models.Model):
     _name = 'osi.diagnostics'
     _description = 'Diagnostics'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name  = fields.Char(string='Name', required=True)
-    parent_id = fields.Many2one(string='Family', comodel_name='osi.diagnostics')
+    name  = fields.Char(string='Nom', required=True)
+    parent_id = fields.Many2one(string='Famille', comodel_name='osi.diagnostics')
 
 class Lits(models.Model):
     _name = 'osi.lits'
     _description = 'Lits'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name  = fields.Char(string='Name',required=True)
-    room  = fields.Char(string='Room', required=True)
-    sector  = fields.Char(string='Sector', required=True)
-    medicins_ids = fields.Many2many('res.partner',string='Medicins')
+    name  = fields.Char(string='Nom',required=True)
+    room  = fields.Char(string='Chambre', required=True)
+    sector  = fields.Char(string='Secteur', required=True)
+    medicins_ids = fields.Many2many('res.partner',string='Médecins')
 
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
 
-    is_patient = fields.Boolean(string='Is patient')
-    is_medicins = fields.Boolean(string='Is medicins')
-    sexe  = fields.Selection(string='Sexe', selection=[('male', 'Male'),('female', 'Female')])
+    is_patient = fields.Boolean(string='Est un patient')
+    is_medicins = fields.Boolean(string='Est un médecin')
+    sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')])
+    # region = fields.Many2one(string='Région',comodel_name='osi.region')
 
 class Tags(models.Model):
     _name = 'osi.tags'
 
-    name  = fields.Char(string='Name' , required=True, )
+    name  = fields.Char(string='Nom' , required=True, )
     color  = fields.Integer(string='Color')
 
 class Stages(models.Model):
     _name = 'osi.stages'
 
-    name  = fields.Char(string='Name' , required=True, )
+    name  = fields.Char(string='Nom' , required=True, )
+
+class Region(models.Model):
+    _name = 'osi.region'
+
+    name  = fields.Char(string='Nom' , required=True, )
+    arab_name  = fields.Char(string='Région(arabe)' )
 
     

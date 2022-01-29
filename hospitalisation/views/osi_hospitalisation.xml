@@ -15,8 +15,9 @@
                         <group name="group1">
                             <group name="gourp11">
                                 <field name="start_date"/>
-                                <field name="patient_id"/>
+                                <field name="patient_id" domain="[('is_patient', '=',True) ]"/>
                                 <field name="sexe"/>
+                                <!-- <field name="region"/> -->
                                 <field name="lits_id"/>
                                 <field name="room"/>
                                 <field name="sector"/>
@@ -49,6 +50,7 @@
                     <field name="start_date"/>
                     <field name="patient_id"/>
                     <field name="sexe"/>
+                    <!-- <field name="region"/> -->
                     <field name="lits_id"/>
                     <field name="room"/>
                     <field name="sector"/>

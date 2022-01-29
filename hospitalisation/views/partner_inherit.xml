@@ -11,6 +11,7 @@
           <field name="is_patient"/>
           <field name="is_medicins"/>
           <field name="sexe"/>
+          <!-- <field name="region"/> -->
         </xpath>
       </field>
     </record>

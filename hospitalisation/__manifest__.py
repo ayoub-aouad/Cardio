@@ -16,7 +16,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail'],
+    'depends': ['base','mail','contacts'],
 
     # always loaded
     'data': [
@@ -26,6 +26,7 @@
         'views/osi_lits.xml',
         'views/osi_tags.xml',
         'views/osi_stages.xml',
+        'views/osi_region.xml',
         'views/osi_hospitalisation.xml',
         'views/menuitem.xml',
     ],

@@ -20,7 +20,7 @@
                                 <field name="sector"/>
                             </group>
                             <group ame='group12'>
-                                <field name="medicins_ids" widget="many2many_tags"/>
+                                <field name="medicins_ids" widget="many2many_tags"  domain="[('is_medicins', '=',True) ]"/>
                             </group>
                         </group>
                     </sheet>

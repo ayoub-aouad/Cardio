@@ -37,6 +37,12 @@
             action="osi_stages_action"
             parent="configuration_menu"
             sequence="50"/>
-        
+            <menuitem
+            id="osi_region_menu"
+            name="Région"
+            action="osi_region_action"
+            parent="contacts.res_partner_menu_config"
+            sequence="10"/>
+        	
     </data>
 </odoo>

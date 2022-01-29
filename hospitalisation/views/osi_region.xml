@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="osi_region_form" model="ir.ui.view">
+            <field name="name">osi.region.form</field>
+            <field name="model">osi.region</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="arab_name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="osi_region_tree" model="ir.ui.view">
+            <field name="name">osi.region.tree</field>
+            <field name="model">osi.region</field>
+            <field name="arch" type="xml">
+                <tree string="Région"  editable="bottom">
+                    <field name="name" />
+                    <field name="arab_name" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="osi_region_action" model="ir.actions.act_window">
+            <field name="name">Région</field>
+            <field name="res_model">osi.region</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        
+    </data>
+</odoo>
