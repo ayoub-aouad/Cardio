@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  <!-- Inheriting and adding to contact Form View -->
+    <record model="ir.ui.view" id="inherit_res_partner_form">
+      <field name="name">res.partner.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//span[@name='address_name']" position="before">
+          <field name="is_patient"/>
+          <field name="is_medicins"/>
+          <field name="sexe"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

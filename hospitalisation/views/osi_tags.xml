@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="osi_tags_form" model="ir.ui.view">
+            <field name="name">osi.tags.form</field>
+            <field name="model">osi.tags</field>
+            <field name="arch" type="xml">
+                <form string="Tags">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="color" widget="color_picker" optional="show"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="osi_tags_tree" model="ir.ui.view">
+            <field name="name">Tags</field>
+            <field name="model">osi.tags</field>
+            <field name="arch" type="xml">
+                <tree string="Tags" editable="top" sample="1">
+                    <field name="name"/>
+                    <field name="color" widget="color_picker" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="osi_tags_action" model="ir.actions.act_window">
+            <field name="name">Tags</field>
+            <field name="res_model">osi.tags</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

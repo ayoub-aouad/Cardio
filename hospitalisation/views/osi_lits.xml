@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="osi_lits_form" model="ir.ui.view">
+            <field name="name">osi.lits.form</field>
+            <field name="model">osi.lits</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet string="Lits">
+                        <!-- <widget name="web_ribbon" text="Archivé" bg_color="bg-danger" attrs="{'invisible': [('x_active', '=', True)]}"/>
+                        <field name="x_active" invisible="1"/> -->
+                        <div class="oe_title">
+                                    <h1>
+                                        <field name="name" required="1" placeholder="Name..."/>
+                                    </h1>
+                                </div>
+                        <group name="group1">
+                            <group name='group11'>
+                                <field name="room"/>
+                                <field name="sector"/>
+                            </group>
+                            <group ame='group12'>
+                                <field name="medicins_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter" name="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree view -->
+        <record id="osi_lits_tree" model="ir.ui.view">
+            <field name="name">osi.lits.tree</field>
+            <field name="model">osi.lits</field>
+            <field name="arch" type="xml">
+                <tree string="Lits">
+                    <field name="name"/>
+                    <field name="room"/>
+                    <field name="sector"/>
+                    <field name="medicins_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="osi_lits_action" model="ir.actions.act_window">
+            <field name="name">Lits</field>
+            <field name="res_model">osi.lits</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_osi_hospitalisation,access_osi_hospitalisation,model_osi_hospitalisation,base.group_user,1,1,1,1
+access_osi_lits,access_osi_lits,model_osi_lits,base.group_user,1,1,1,1
+access_osi_diagnostics,access_osi_diagnostics,model_osi_diagnostics,base.group_user,1,1,1,1
+access_osi_tags,access_osi_tags,model_osi_tags,base.group_user,1,1,1,1
+access_osi_stages,access_osi_stages,model_osi_stages,base.group_user,1,1,1,1

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem name="Hospitalisation" id="hospitalisation_menu" sequence="60" />
+        <menuitem name="Configuration" sequence="20" id="configuration_menu" parent="hospitalisation_menu"/>
+        <menuitem
+            id="osi_hospitalisation_menu"
+            name="Hospitalisation"
+            action="osi_hospitalisation_action"
+            parent="hospitalisation_menu"
+            sequence="10"/>
+
+        <menuitem
+            id="osi_diagnostics_menu"
+            name="Diagnostics"
+            action="osi_diagnostics_action"
+            parent="configuration_menu"
+            sequence="20"/>
+
+        <menuitem
+            id="osi_lits_menu"
+            name="Lits"
+            action="osi_lits_action"
+            parent="configuration_menu"
+            sequence="30"/>
+
+        <menuitem 
+        name="Tags" 
+        sequence="40" 
+        id="osi_tags_menu" 
+        parent="configuration_menu" 
+        action="osi_tags_action"/>
+
+        <menuitem
+            id="osi_stages_menu"
+            name="Stages"
+            action="osi_stages_action"
+            parent="configuration_menu"
+            sequence="50"/>
+        
+    </data>
+</odoo>

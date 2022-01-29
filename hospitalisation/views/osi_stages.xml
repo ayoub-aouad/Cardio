@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="osi_stages_form" model="ir.ui.view">
+            <field name="name">osi.stages.form</field>
+            <field name="model">osi.stages</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="osi_stages_tree" model="ir.ui.view">
+            <field name="name">osi.stages.tree</field>
+            <field name="model">osi.stages</field>
+            <field name="arch" type="xml">
+                <tree string="Tags"  editable="bottom">
+                    <field name="name" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="osi_stages_action" model="ir.actions.act_window">
+            <field name="name">Stages</field>
+            <field name="res_model">osi.stages</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        
+    </data>
+</odoo>
