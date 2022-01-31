@@ -47,10 +47,25 @@
             </field>
         </record>
 
+        <!-- Search -->
+        <record id="view_osi_lits_filter" model="ir.ui.view">
+            <field name="name">osi.lits.select</field>
+            <field name="model">osi.lits</field>
+            <field name="arch" type="xml">
+                <search string="Search Lits">
+                    <group expand="0" string="Group By">
+                        <filter string="Chambre" name="Chambre" context="{'group_by': 'room'}"/>
+                        <filter string="Secteur" name="Secteur" context="{'group_by': 'sector'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- Action -->
         <record id="osi_lits_action" model="ir.actions.act_window">
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
+            <!-- <field name="context">{'group_by': ['sector','room','medicins_ids']}</field> -->
             <field name="view_mode">tree,form</field>
         </record>
     </data>

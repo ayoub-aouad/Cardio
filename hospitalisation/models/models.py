@@ -9,7 +9,11 @@ class Hospitalisation(models.Model):
     _description = 'Hospitalisation'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Nom',required=True)
+    name = fields.Char(string='Nom',default='Hospitalisation normale',required=True)
+    priority = fields.Selection([
+        ('0', 'Normal'),
+        ('1', 'Important'),
+    ], default='0', index=True, string="Starred", tracking=True)
     start_date = fields.Datetime(string='Date d\'entrée',required=True)
     end_date = fields.Datetime(string='Date de sortie')
     duration = fields.Integer(string='Durée de séjour', compute='_compute_days', store=True)
@@ -17,14 +21,19 @@ class Hospitalisation(models.Model):
     # patient
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
+    age  = fields.Integer(string='Age',related='patient_id.age')
     # region = fields.Many2one(string='Région',comodel_name='osi.region',readonly=False)
-    # diagnostics   
-    # print(x)
+    # diagnostics 
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
     lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',required=True,)
     room  = fields.Char(string='Chambre',related='lits_id.room',readonly=False)
     sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False)
+    kanban_state = fields.Selection([
+        ('normal', 'In Progress'),
+        ('done', 'Ready'),
+        ('blocked', 'Blocked')], string='Status',
+        copy=False, default='normal', required=True)
 
     # Stages 
     stage_id = fields.Many2one(string='Stages', comodel_name='osi.stages')
@@ -75,9 +84,10 @@ class Lits(models.Model):
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
 
-    is_patient = fields.Boolean(string='Est un patient')
-    is_medicins = fields.Boolean(string='Est un médecin')
+    is_patient = fields.Boolean(string='Est un patient', default=True)
+    is_medicins = fields.Boolean(string='Est un médecin', default=False)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')])
+    age  = fields.Integer(string='Age')
     # region = fields.Many2one(string='Région',comodel_name='osi.region')
 
 class Tags(models.Model):
