@@ -43,7 +43,6 @@
         <record id="osi_diagnostics_action" model="ir.actions.act_window">
             <field name="name">Diagnostics</field>
             <field name="res_model">osi.diagnostics</field>
-            <field name="context">{'group_by': 'family'}</field>
             <field name="view_mode">tree,form</field>
         </record>
 

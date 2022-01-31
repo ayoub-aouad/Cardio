@@ -73,10 +73,9 @@
             <field name="name">osi.hospitalisation.view.kanban</field>
             <field name="model">osi.hospitalisation</field>
             <field name="arch" type="xml">
-                <kanban default_group_by='stage_id' class="o_kanban_small_column o_kanban_project_tasks" >
+                <kanban default_group_by='stage_id' class="o_kanban_small_column o_opportunity_kanban" archivable="false" sample="1" >
                     <field name="stage_id" options='{"group_by_tooltip": {"name": "Description"}}'/>
                     <field name="duration" />
-                    <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "muted"}'/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -103,6 +102,8 @@
             </field>
         </record>
 
+
+
         <!-- Action -->
         <record id="osi_hospitalisation_action" model="ir.actions.act_window">
             <field name="name">Hospitalisation</field>
@@ -110,7 +111,18 @@
             <field name="view_mode">kanban,tree,form</field>
         </record>
 
-        
+        <!-- Search -->
+        <!-- <record id="view_osi_hospitalisation_filter" model="ir.ui.view">
+            <field name="name">osi.hospitalisation.select</field>
+            <field name="model">osi.hospitalisation</field>
+            <field name="arch" type="xml">
+                <search string="Search Hospitalisation">
+                    <group expand="0" string="Group By">
+                        <filter string="Personal Stages" name="Personal Stages" context="{'group_by': 'satge_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record> -->
         
     </data>
 </odoo>
