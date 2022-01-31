@@ -69,7 +69,7 @@ class Diagnostics(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name  = fields.Char(string='Nom', required=True)
-    parent_id = fields.Many2one(string='Famille', comodel_name='osi.diagnostics')
+    family = fields.Char(string='Famille', required=True)
 
 class Lits(models.Model):
     _name = 'osi.lits'

@@ -6,7 +6,11 @@
             <field name="model">osi.hospitalisation</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
+                
                 <form string="Hospitalisations">
+                    <header>
+                        <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
+                    </header>
                     <sheet string="Hospitalisation">
                         <div class="oe_title pr-0">
                             <h1 class="d-flex flex-row">
@@ -23,15 +27,13 @@
                                 <field name="lits_id" widget='selection'/>
                                 <field name="room"/>
                                 <field name="sector"/>
-                                <field name="diagnostics_id" domain="[('parent_id', '!=',None) ]" 
+                                <field name="diagnostics_id" domain="[('family', '!=',None) ]" 
                                 widget='selection'
                                 />
-                                <field name="kanban_state"/>
                             </group>
                             <group name="group12">
                                 <field name="end_date" />
                                 <field name="duration" />
-                                <field name="stage_id"/>
                             </group>
                         </group>
                         <field name="description"/>
@@ -86,11 +88,11 @@
                                 </h4>
                                 </strong>
                                 <ul>
-                                    <li><field name="patient_id"/></li>                                
-                                    <li><field name="lits_id"/></li>
+                                    <li>Nom : <field name="patient_id"/></li>                                
+                                    <li>Lit : <field name="lits_id"/></li>
                                     <li class="d-flex flex-row justify-content-between">
-                                        <field name="age"/>
-                                        <field name="duration"/>
+                                        Age : <field name="age"/>
+                                        Durée : <field name="duration"/>
                                     </li>
                                 </ul>
                             </div> 

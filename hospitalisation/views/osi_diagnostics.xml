@@ -14,7 +14,7 @@
                         </div>
                         <group name="group1">
                             <group>
-                                <field name="parent_id" />
+                                <field name="family" />
                             </group>
                         </group>
                     </sheet>
@@ -34,7 +34,7 @@
             <field name="arch" type="xml">
                 <tree string="Diagnostics" editable="bottom">
                     <field name="name"/>
-                    <field name="parent_id"/>
+                    <field name="family"/>
                 </tree>
             </field>
         </record>
@@ -43,7 +43,7 @@
         <record id="osi_diagnostics_action" model="ir.actions.act_window">
             <field name="name">Diagnostics</field>
             <field name="res_model">osi.diagnostics</field>
-            <field name="context">{'group_by': 'parent_id'}</field>
+            <field name="context">{'group_by': 'family'}</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -53,9 +53,9 @@
             <field name="arch" type="xml">
                 <search string="Search Project">
                     <field name="name" string="Dignostique"/>
-                    <field name="parent_id" string="Famille"/>
+                    <field name="family" string="Famille"/>
                     <group expand="0" string="Group By">
-                        <filter string="Famille" name="Famille" context="{'group_by': 'parent_id'}"/>
+                        <filter string="Famille" name="Famille" context="{'group_by': 'family'}"/>
                     </group>
                 </search>
             </field>
