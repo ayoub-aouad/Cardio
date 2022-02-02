@@ -13,7 +13,38 @@
           <field name="sexe"/>
           <field name="age"/>
         </xpath>
+        <xpath expr="//page[@name='contact_addresses']" position="before" >
+          <page name="patient_directory" string="Dossier Patients" attrs="{'invisible': [('is_patient','=',False)]}">
+            <group>
+              <field name="ipp"/>
+            </group>
+            
+          </page>
+          <page name="medicin_directory" string="Dossier Médecin" attrs="{'invisible': [('is_medicins','=',False)]}">
+            <group>
+              <field name="cnom"/>
+            </group>
+            
+          </page>
+        </xpath>
       </field>
+    </record>
+
+    <!-- New action for the Patients -->
+    <record id='action_patients_date' model='ir.actions.act_window'>
+          <field name="name">Patients</field>
+          <field name="res_model">res.partner</field>
+          <field name="view_mode">tree,form</field>
+          <field name="context">{'default_is_patient': True,'default_is_medicins': False}</field>
+          <field name="domain">[('is_patient','=',True)]</field>
+    </record>
+    <!-- New action for the Medicins -->
+    <record id='action_medicins_date' model='ir.actions.act_window'>
+          <field name="name">Médicins</field>
+          <field name="res_model">res.partner</field>
+          <field name="view_mode">tree,form</field>
+          <field name="context">{'default_is_patient': False,'default_is_medicins': True}</field>
+          <field name="domain">[('is_medicins','=',True)]</field>
     </record>
   </data>
 </odoo>

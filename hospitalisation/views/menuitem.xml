@@ -9,6 +9,13 @@
             action="osi_hospitalisation_action"
             parent="hospitalisation_menu"
             sequence="10"/>
+        
+        <menuitem
+            id="osi_config_menu"
+            name="Configuration générale"
+            action="hospitalisation_config_action"
+            parent="configuration_menu"
+            sequence="1"/>
 
         <menuitem
             id="osi_diagnostics_menu"
@@ -37,7 +44,20 @@
             action="osi_stages_action"
             parent="configuration_menu"
             sequence="50"/>
-            <menuitem
+        <menuitem
+            id="osi_patiens_menu"
+            name="Patients"
+            action="action_patients_date"
+            parent="configuration_menu"
+            sequence="60"/>
+        <menuitem
+            id="osi_medicins_menu"
+            name="Médicins"
+            action="action_medicins_date"
+            parent="configuration_menu"
+            sequence="70"/>
+
+        <menuitem
             id="osi_region_menu"
             name="Région"
             action="osi_region_action"

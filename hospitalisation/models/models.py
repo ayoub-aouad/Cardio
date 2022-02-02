@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api,_
+from odoo import models, fields, api,_,SUPERUSER_ID
 from datetime import datetime
 
 
@@ -18,6 +18,7 @@ class Hospitalisation(models.Model):
     end_date = fields.Datetime(string='Date de sortie')
     duration = fields.Integer(string='Durée de séjour', compute='_compute_days', store=True)
     description = fields.Text(string='Description')
+    is_red  = fields.Boolean(default=False)
     # patient
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
@@ -27,8 +28,8 @@ class Hospitalisation(models.Model):
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
     lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',required=True,)
-    room  = fields.Char(string='Chambre',related='lits_id.room',readonly=False)
-    sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False)
+    room  = fields.Char(string='Chambre',related='lits_id.room',readonly=False,store=True)
+    sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False,store=True)
     kanban_state = fields.Selection([
         ('normal', 'In Progress'),
         ('done', 'Ready'),
@@ -36,7 +37,19 @@ class Hospitalisation(models.Model):
         copy=False, default='normal', required=True)
 
     # Stages 
-    stage_id = fields.Many2one(string='Stages', comodel_name='osi.stages')
+    stage_id = fields.Many2one(string='Stages', comodel_name='osi.stages', copy=False, group_expand='_read_group_stage_ids')
+
+    # This method fixes stages inside kanban view
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        stages = self.env['osi.stages'].search([('name','!=',False)])
+        num = len(stages) - 1
+        search_domain = num*['|']
+        for red in stages:
+            search_domain.append(('id', '=', red.id))
+        # perform search
+        stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
+        return stages.browse(stage_ids)
 
     # Compute days number
     @api.depends('start_date','end_date')
@@ -62,6 +75,17 @@ class Hospitalisation(models.Model):
                 rec.duration = (d2 - d1).days +1
             else:
                 rec.duration = rec.duration
+    
+    # Verify duration
+    @api.onchange('duration','start_date','end_date')
+    def onchange_duration(self):
+        for rec in self:
+            params = self.env['ir.config_parameter'].sudo()
+            max_duree = int(params.get_param('hospitalisation.max_duration'))
+            if rec.duration >= max_duree:
+                rec.is_red = True
+            else:
+                rec.is_red = False
 
 class Diagnostics(models.Model):
     _name = 'osi.diagnostics'
@@ -80,6 +104,11 @@ class Lits(models.Model):
     room  = fields.Char(string='Chambre', required=True)
     sector  = fields.Char(string='Secteur', required=True)
     medicins_ids = fields.Many2many('res.partner',string='Médecins')
+    kanban_state = fields.Selection([
+        ('free', 'Libre'),
+        ('used', 'Occupé'),
+        ('blocked', 'Indisponible')], string='Status',
+        copy=False, default='free', required=True)
 
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
@@ -88,7 +117,10 @@ class ResPartnerInherit(models.Model):
     is_medicins = fields.Boolean(string='Est un médecin', default=False)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')])
     age  = fields.Integer(string='Age')
-    # region = fields.Many2one(string='Région',comodel_name='osi.region')
+    # Medicins directory
+    cnom = fields.Char(string="CNOM")
+    # Patients directory
+    ipp = fields.Char(string="IPP")
 
 class Tags(models.Model):
     _name = 'osi.tags'
@@ -106,5 +138,11 @@ class Region(models.Model):
 
     name  = fields.Char(string='Nom' , required=True, )
     arab_name  = fields.Char(string='Région(arabe)' )
+
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = ['res.config.settings']
+
+    max_duration = fields.Integer( string="Durée max", config_parameter='hospitalisation.max_duration')
 
     
