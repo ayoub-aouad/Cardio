@@ -10,6 +10,12 @@
                 <form string="Hospitalisations">
                     <header>
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
+                        <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}">
+                            <field name="active"/>
+                        </button>
+                        <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}">
+                            <field name="active"/>
+                        </button>
                     </header>
                     <sheet string="Hospitalisation">
                         <div class="oe_title pr-0">

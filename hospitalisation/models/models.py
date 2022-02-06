@@ -19,6 +19,11 @@ class Hospitalisation(models.Model):
     duration = fields.Integer(string='Durée de séjour', compute='_compute_days', store=True)
     description = fields.Text(string='Description')
     is_red  = fields.Boolean(default=False)
+    active  = fields.Boolean(string = 'active', default=True)
+
+   
+    
+
     # patient
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
@@ -35,10 +40,8 @@ class Hospitalisation(models.Model):
         ('done', 'Ready'),
         ('blocked', 'Blocked')], string='Status',
         copy=False, default='normal', required=True)
-
     # Stages 
-    stage_id = fields.Many2one(string='Stages', comodel_name='osi.stages', copy=False, group_expand='_read_group_stage_ids')
-
+    stage_id = fields.Many2one(string='Stages',default=lambda self: self.env['osi.stages'].search([('id','!=',False)],order='id asc', limit=1).id, comodel_name='osi.stages', copy=False, group_expand='_read_group_stage_ids')
     # This method fixes stages inside kanban view
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
