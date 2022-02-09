@@ -73,7 +73,7 @@ class Hospitalisation(models.Model):
                 rec.duration = (d2 - d1).days +1
             else:
                 rec.duration = rec.duration
-    
+
     # Verify duration
     @api.onchange('duration','start_date','end_date')
     def onchange_duration(self):
@@ -84,6 +84,14 @@ class Hospitalisation(models.Model):
                 rec.is_red = True
             else:
                 rec.is_red = False
+    
+    @api.onchange('stage_id')
+    def remove_hospi_ids_from_lits(self):
+        for rec in self:
+            stage = self.env['osi.stages'].search([('id','!=',False)],order='id desc', limit=1)
+            if rec.stage_id.id == stage.id:
+                self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'free',
+                'patient_id':False,})
 
 class Diagnostics(models.Model):
     _name = 'osi.diagnostics'
@@ -106,8 +114,12 @@ class Lits(models.Model):
         ('free', 'Libre'),
         ('used', 'Occupé'),
         ('blocked', 'Indisponible')], string='Status',
-        copy=False, default='free', required=True, compute='auto_state',store=True, readonly=False)
+        copy=False, default='free', required=True, compute='auto_state',store=True)
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner',compute='patient_assignement',store=True)
+    diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',compute='patient_assignement',store=True)
+    duration = fields.Integer(string='Durée de séjour', compute='patient_assignement', store=True)
+
+
     hospi_ids = fields.One2many('osi.hospitalisation', 'lits_id')
     # Automatically assigne state
     @api.depends('hospi_ids')
@@ -115,6 +127,7 @@ class Lits(models.Model):
         for rec in self:
             if rec.hospi_ids:
                 rec.kanban_state = 'used'
+
     # Automatically assigne Patient
     @api.depends('hospi_ids')
     def patient_assignement(self):
@@ -122,6 +135,13 @@ class Lits(models.Model):
             if rec.hospi_ids:
                 for fields in rec.hospi_ids:
                     rec.patient_id = fields.patient_id.id
+                    rec.diagnostics_id = fields.diagnostics_id.id
+                    rec.duration = fields.duration
+    
+    # Change State 
+    def sef_to_blocked(self):
+        for rec in self:
+            rec.kanban_state = 'blocked'
 
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
