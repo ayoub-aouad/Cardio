@@ -20,15 +20,10 @@ class Hospitalisation(models.Model):
     description = fields.Text(string='Description')
     is_red  = fields.Boolean(default=False)
     active  = fields.Boolean(string = 'active', default=True)
-
-   
-    
-
     # patient
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner', required=True,)
     sexe  = fields.Selection(string='Sexe', selection=[('male', 'Homme'),('female', 'Femme')],related='patient_id.sexe',readonly=False)
     age  = fields.Integer(string='Age',related='patient_id.age')
-    # region = fields.Many2one(string='Région',comodel_name='osi.region',readonly=False)
     # diagnostics 
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
@@ -111,7 +106,22 @@ class Lits(models.Model):
         ('free', 'Libre'),
         ('used', 'Occupé'),
         ('blocked', 'Indisponible')], string='Status',
-        copy=False, default='free', required=True)
+        copy=False, default='free', required=True, compute='auto_state',store=True, readonly=False)
+    patient_id = fields.Many2one(string='Patient', comodel_name='res.partner',compute='patient_assignement',store=True)
+    hospi_ids = fields.One2many('osi.hospitalisation', 'lits_id')
+    # Automatically assigne state
+    @api.depends('hospi_ids')
+    def auto_state(self):
+        for rec in self:
+            if rec.hospi_ids:
+                rec.kanban_state = 'used'
+    # Automatically assigne Patient
+    @api.depends('hospi_ids')
+    def patient_assignement(self):
+        for rec in self:
+            if rec.hospi_ids:
+                for fields in rec.hospi_ids:
+                    rec.patient_id = fields.patient_id.id
 
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'

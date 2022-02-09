@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <record id="osi_hospitalisation_form" model="ir.ui.view">
             <field name="name">osi.hospitalisation.form</field>
             <field name="model">osi.hospitalisation</field>
@@ -140,6 +139,4 @@
                 </search>
             </field>
         </record>
-        
-    </data>
 </odoo>
