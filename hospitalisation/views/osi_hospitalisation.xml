@@ -1,142 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <record id="osi_hospitalisation_form" model="ir.ui.view">
-            <field name="name">osi.hospitalisation.form</field>
-            <field name="model">osi.hospitalisation</field>
-            <field eval="2" name="priority"/>
-            <field name="arch" type="xml">
-                
-                <form string="Hospitalisations">
-                    <header>
-                        <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
-                        <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}">
-                            <field name="active"/>
-                        </button>
-                        <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}">
-                            <field name="active"/>
-                        </button>
-                    </header>
-                    <sheet string="Hospitalisation">
-                        <div class="oe_title pr-0">
-                            <h1 class="d-flex flex-row">
-                                <field name="priority" widget="priority" class="mr-3"/>
-                                <field name="name" required="1" placeholder="Name..."/>
-                            </h1>
-                        </div>
-                        <group name="group1">
-                            <group name="gourp11">
-                                <field name="start_date"/>
-                                <field name="patient_id" domain="[('is_patient', '=',True) ]"/>
-                                <field name="sexe"/>
-                                <field name="age"/>
-                                <field name="lits_id" widget='selection' domain="[('kanban_state', '=','free') ]"/>
-                                <field name="room"/>
-                                <field name="sector"/>
-                                <field name="diagnostics_id" domain="[('family', '!=',None) ]" 
-                                widget='selection'
-                                />
-                            </group>
-                            <group name="group12">
-                                <field name="end_date" />
-                                <field name="duration" />
-                                <field name="is_red" invisible="1" />
-                            </group>
-                        </group>
-                        <field name="description"/>
-                    </sheet>
-                    <div class="oe_chatter" name="oe_chatter">
-                        <field name="message_follower_ids"/>
-                        <field name="message_ids"/>
-                        <field name="activity_ids"/>
+    <record id="osi_hospitalisation_form" model="ir.ui.view">
+        <field name="name">osi.hospitalisation.form</field>
+        <field name="model">osi.hospitalisation</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Hospitalisations">
+                <header>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
+                    <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}">
+                        <field name="active"/>
+                    </button>
+                    <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}">
+                        <field name="active"/>
+                    </button>
+                </header>
+                <sheet string="Hospitalisation">
+                    <div class="oe_title pr-0">
+                        <h1 class="d-flex flex-row">
+                            <field name="priority" widget="priority" class="mr-3"/>
+                            <field name="name" required="1" placeholder="Name..."/>
+                        </h1>
                     </div>
-                </form>
-            </field>
-        </record>
-
-        <!-- Tree -->
-        <record id="osi_hospitalisation_tree" model="ir.ui.view">
-            <field name="name">Hospitalisation</field>
-            <field name="model">osi.hospitalisation</field>
-            <field name="arch" type="xml">
-                <tree string="Hospitalisation">
-                    <field name="name"/>
-                    <field name="start_date"/>
-                    <field name="patient_id"/>
-                    <field name="sexe"/>
-                    <!-- <field name="region"/> -->
-                    <field name="lits_id"/>
-                    <field name="room"/>
-                    <field name="sector"/>
-                    <field name="diagnostics_id"/>
-                    <field name="end_date" />
-                    <field name="duration" />
-                </tree>
-            </field>
-        </record>
-        
-
-        <!-- Kanban -->
-        <record id="osi_hospitalisation_view_kanban" model="ir.ui.view">
-            <field name="name">osi.hospitalisation.view.kanban</field>
-            <field name="model">osi.hospitalisation</field>
-            <field name="arch" type="xml">
-                <kanban colors="red:is_red==True" default_group_by='stage_id' class="o_kanban_small_column o_opportunity_kanban"  >
-                    <field name="stage_id" options='{"group_by_tooltip": {"name": "Description"}}'/>
-                    <field name="duration" />
-                    <field name="is_red" />
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{record.is_red.raw_value} oe_kanban_card oe_kanban_global_click">
-                            <div class="oe_kanban_details" >
-                                <strong class="o_kanban_record_title" >
-                                <h4 class="d-flex flex-row " t-if="record.is_red.raw_value" style="color: #FF0000;">
-                                <field name="priority" widget="priority"/>
-                                <field name="name" />
-                                </h4>
-                                <h4 class="d-flex flex-row " t-if="!record.is_red.raw_value">
-                                <field name="priority" widget="priority"/>
-                                <field name="name" />
-                                </h4>
-                                </strong>
-                                <ul>
-                                    <li>Nom : <field name="patient_id"/></li>                                
-                                    <li>Lit : <field name="lits_id"/></li>
-                                    <li>Diagnostique : <field name="diagnostics_id"/></li>
-                                    <li class="d-flex flex-row justify-content-between">
-                                        Age : <field name="age"/>
-                                        Durée : <field name="duration"/>
-                                    </li>
-                                </ul>
-                            </div> 
-                        </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
-
-
-
-        <!-- Action -->
-        <record id="osi_hospitalisation_action" model="ir.actions.act_window">
-            <field name="name">Hospitalisation</field>
-            <field name="res_model">osi.hospitalisation</field>
-            <field name="view_mode">kanban,tree,form</field>
-        </record>
-
-        <!-- Search -->
-        <record id="view_osi_hospitalisation_filter" model="ir.ui.view">
-            <field name="name">osi.hospitalisation.select</field>
-            <field name="model">osi.hospitalisation</field>
-            <field name="arch" type="xml">
-                <search string="Search Hospitalisation">
-                    <field name="diagnostics_id"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Chambre" name="Chambre" context="{'group_by': 'room'}"/>
-                        <filter string="Secteur" name="Secteur" context="{'group_by': 'sector'}"/>
-                        <filter string="Diagnostiques" name="Diagnostiques" context="{'group_by': 'diagnostics_id'}"/>
+                    <group name="group1">
+                        <group name="gourp11">
+                            <field name="start_date"/>
+                            <field name="patient_id" domain="[('is_patient', '=',True) ]"/>
+                            <field name="sexe"/>
+                            <field name="age"/>
+                            <field name="lits_id" widget='selection' domain="[('kanban_state', '=','free') ]"/>
+                            <field name="room"/>
+                            <field name="sector"/>
+                            <field name="diagnostics_id" domain="[('family', '!=',None) ]" 
+                            widget='selection'
+                            />
+                        </group>
+                        <group name="group12">
+                            <field name="end_date" />
+                            <field name="duration" />
+                            <field name="is_red" invisible="1" />
+                        </group>
                     </group>
-                </search>
-            </field>
-        </record>
+                    <field name="description"/>
+                </sheet>
+                <div class="oe_chatter" name="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!-- Tree -->
+    <record id="osi_hospitalisation_tree" model="ir.ui.view">
+        <field name="name">Hospitalisation</field>
+        <field name="model">osi.hospitalisation</field>
+        <field name="arch" type="xml">
+            <tree string="Hospitalisation">
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="patient_id"/>
+                <field name="sexe"/>
+                <!-- <field name="region"/> -->
+                <field name="lits_id"/>
+                <field name="room"/>
+                <field name="sector"/>
+                <field name="diagnostics_id"/>
+                <field name="end_date" />
+                <field name="duration" />
+            </tree>
+        </field>
+    </record>
+    <!-- Kanban -->
+    <record id="osi_hospitalisation_view_kanban" model="ir.ui.view">
+        <field name="name">osi.hospitalisation.view.kanban</field>
+        <field name="model">osi.hospitalisation</field>
+        <field name="arch" type="xml">
+            <kanban colors="red:is_red==True" default_group_by='stage_id' class="o_kanban_small_column o_opportunity_kanban"  >
+                <field name="stage_id" options='{"group_by_tooltip": {"name": "Description"}}'/>
+                <field name="duration" />
+                <field name="is_red" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757;width:300px">
+                        <div class="oe_kanban_details" >
+                            <strong class="o_kanban_record_title" >
+                            <h4 class="d-flex flex-row ">
+                            <field name="priority" widget="priority"/>
+                            <field name="name" />
+                            </h4>
+                            </strong>
+                            <ul>
+                                <li>Nom : <field name="patient_id"/></li>                                
+                                <li>Lit : <field name="lits_id"/></li>
+                                <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                <li class="d-flex flex-row justify-content-between">
+                                    Age : <field name="age"/>
+                                    Durée : <field name="duration"/>
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>
+                    <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b;width:300px">
+                        <div class="oe_kanban_details" >
+                            <strong class="o_kanban_record_title" >
+                            <h4 class="d-flex flex-row ">
+                            <field name="priority" widget="priority"/>
+                            <field name="name" />
+                            </h4>
+                            </strong>
+                            <ul>
+                                <li>Nom : <field name="patient_id"/></li>                                
+                                <li>Lit : <field name="lits_id"/></li>
+                                <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                <li class="d-flex flex-row justify-content-between">
+                                    Age : <field name="age"/>
+                                    Durée : <field name="duration"/>
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="osi_hospitalisation_action" model="ir.actions.act_window">
+        <field name="name">Hospitalisation</field>
+        <field name="res_model">osi.hospitalisation</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <!-- Search -->
+    <record id="view_osi_hospitalisation_filter" model="ir.ui.view">
+        <field name="name">osi.hospitalisation.select</field>
+        <field name="model">osi.hospitalisation</field>
+        <field name="arch" type="xml">
+            <search string="Search Hospitalisation">
+                <field name="diagnostics_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Chambre" name="Chambre" context="{'group_by': 'room'}"/>
+                    <filter string="Secteur" name="Secteur" context="{'group_by': 'sector'}"/>
+                    <filter string="Diagnostiques" name="Diagnostiques" context="{'group_by': 'diagnostics_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>

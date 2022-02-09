@@ -142,6 +142,9 @@ class Lits(models.Model):
     def sef_to_blocked(self):
         for rec in self:
             rec.kanban_state = 'blocked'
+    def sef_to_free(self):
+        for rec in self:
+            rec.kanban_state = 'free'
 
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
