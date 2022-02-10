@@ -66,7 +66,7 @@
                     <progressbar field="kanban_state" colors='{"free": "success", "blocked": "danger", "used": "warning"}'/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'used'" style="background-color: #fa9150;">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'used'" style="background-color: #fa9150;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
                                 <div class="oe_kanban_details">
                                     <strong>
                                     <h4 class="d-flex flex-row " >
@@ -79,13 +79,13 @@
                                         <li>Diagnostique : <field name="diagnostics_id"/></li>
                                         <li class="d-flex flex-row justify-content-between">
                                             Secteur : <field name="sector"/>
-                                            Statue : <field name="kanban_state"/>
+                                            Statut : <field name="kanban_state"/>
                                             Durée : <field name="duration"/>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'blocked'" style="background-color: #fa5757;">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'blocked'" style="background-color: #fa5757;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
                                 <div class="oe_kanban_details"  >
                                     <strong>
                                     <h4 class="d-flex flex-row ">
@@ -98,13 +98,13 @@
                                         <li>Diagnostique : <field name="diagnostics_id"/></li>
                                         <li class="d-flex flex-row justify-content-between">
                                             Secteur : <field name="sector"/>
-                                            Statue : <field name="kanban_state"/>
+                                            Statut : <field name="kanban_state"/>
                                             Durée : <field name="duration"/>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'free'" style="background-color: #33d45b;">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.kanban_state.raw_value == 'free'" style="background-color: #33d45b;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
                                 <div class="oe_kanban_details"  >
                                 <strong>
                                 <h4 class="d-flex flex-row ">
@@ -117,7 +117,7 @@
                                     <li>Diagnostique : <field name="diagnostics_id"/></li>
                                     <li class="d-flex flex-row justify-content-between">
                                         Secteur : <field name="sector"/>
-                                        Statue : <field name="kanban_state"/>
+                                        Statut : <field name="kanban_state"/>
                                         Durée : <field name="duration"/>
                                     </li>
                                 </ul>

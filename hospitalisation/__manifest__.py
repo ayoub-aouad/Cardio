@@ -20,6 +20,7 @@
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/partner_inherit.xml',
         'views/osi_diagnostics.xml',

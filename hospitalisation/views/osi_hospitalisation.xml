@@ -82,7 +82,7 @@
                 <field name="is_red" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757;width:300px">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
                         <div class="oe_kanban_details" >
                             <strong class="o_kanban_record_title" >
                             <h4 class="d-flex flex-row ">
@@ -101,7 +101,7 @@
                             </ul>
                         </div> 
                     </div>
-                    <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b;width:300px">
+                    <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
                         <div class="oe_kanban_details" >
                             <strong class="o_kanban_record_title" >
                             <h4 class="d-flex flex-row ">
