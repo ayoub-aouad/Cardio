@@ -7,13 +7,10 @@
         <field name="arch" type="xml">
             <form string="Hospitalisations">
                 <header>
+                <button name="%(rapport_action)d" type="action" string="Rapport" 
+                    context="{'default_hospi_id': active_id}"
+                    />
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
-                    <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}">
-                        <field name="active"/>
-                    </button>
-                    <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}">
-                        <field name="active"/>
-                    </button>
                 </header>
                 <sheet string="Hospitalisation">
                     <div class="oe_title pr-0">
@@ -22,6 +19,7 @@
                             <field name="name" required="1" placeholder="Name..."/>
                         </h1>
                     </div>
+                    
                     <group name="group1">
                         <group name="gourp11">
                             <field name="start_date"/>
@@ -30,6 +28,7 @@
                             <field name="age"/>
                             <field name="lits_id" widget='selection' domain="[('kanban_state', '=','free') ]"/>
                             <field name="room"/>
+                            <field name="kanban_state" invisible="1"/>
                             <field name="sector"/>
                             <field name="diagnostics_id" domain="[('family', '!=',None) ]" 
                             widget='selection'
@@ -42,6 +41,17 @@
                         </group>
                     </group>
                     <field name="description"/>
+                    <notebook>
+                        <page string="Rapports">
+                            <field name="rapport_ids" >
+                                <tree create="false">
+                                    <field name="medicin_id"/>
+                                    <field name="date"/>
+                                    <field name="text"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter" name="oe_chatter">
                     <field name="message_follower_ids"/>
@@ -80,9 +90,11 @@
                 <field name="stage_id" options='{"group_by_tooltip": {"name": "Description"}}'/>
                 <field name="duration" />
                 <field name="is_red" />
+                <field name="kanban_state"/>
+                <progressbar field="kanban_state" colors='{"normal": "", "blocked": "danger", "done": "success"}'/> 
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757"><!--;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;-->
                         <div class="oe_kanban_details" >
                             <strong class="o_kanban_record_title" >
                             <h4 class="d-flex flex-row ">
@@ -101,7 +113,7 @@
                             </ul>
                         </div> 
                     </div>
-                    <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));padding: 10px;">
+                    <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b">
                         <div class="oe_kanban_details" >
                             <strong class="o_kanban_record_title" >
                             <h4 class="d-flex flex-row ">
@@ -142,6 +154,7 @@
                     <filter string="Chambre" name="Chambre" context="{'group_by': 'room'}"/>
                     <filter string="Secteur" name="Secteur" context="{'group_by': 'sector'}"/>
                     <filter string="Diagnostiques" name="Diagnostiques" context="{'group_by': 'diagnostics_id'}"/>
+                    <filter string="Archivé" name="Archivé" context="{'group_by': 'active'}"/>
                 </group>
             </search>
         </field>

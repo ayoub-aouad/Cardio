@@ -32,9 +32,13 @@ class Hospitalisation(models.Model):
     sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False,store=True)
     kanban_state = fields.Selection([
         ('normal', 'In Progress'),
-        ('done', 'Ready'),
-        ('blocked', 'Blocked')], string='Status',
+        ('blocked', 'Blocked'),
+        ('done', 'Ready')], string='Status',
         copy=False, default='normal', required=True)
+
+    # rapport
+    rapport_ids = fields.One2many(string='Rapport',comodel_name='osi.rapport',inverse_name='hospi_id' )
+    
     # Stages 
     stage_id = fields.Many2one(string='Stages',default=lambda self: self.env['osi.stages'].search([('id','!=',False)],order='id asc', limit=1).id, comodel_name='osi.stages', copy=False, group_expand='_read_group_stage_ids')
     # This method fixes stages inside kanban view
@@ -81,9 +85,18 @@ class Hospitalisation(models.Model):
             params = self.env['ir.config_parameter'].sudo()
             max_duree = int(params.get_param('hospitalisation.max_duration'))
             if rec.duration >= max_duree:
+                rec.kanban_state = 'blocked'
                 rec.is_red = True
             else:
+                rec.kanban_state = 'done'
                 rec.is_red = False
+
+    # Changing Lits Stages
+    @api.onchange('lits_id')
+    def onchange_lits_ids(self):
+        for rec in self:
+            if rec.lits_id:
+                self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'used'})
     
     @api.onchange('stage_id')
     def remove_hospi_ids_from_lits(self):
@@ -91,7 +104,8 @@ class Hospitalisation(models.Model):
             stage = self.env['osi.stages'].search([('id','!=',False)],order='id desc', limit=1)
             if rec.stage_id.id == stage.id:
                 self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'free',
-                'patient_id':False,})
+                'patient_id':False,
+                'diagnostics_id':False,})
 
 class Diagnostics(models.Model):
     _name = 'osi.diagnostics'
@@ -121,6 +135,7 @@ class Lits(models.Model):
 
 
     hospi_ids = fields.One2many('osi.hospitalisation', 'lits_id')
+    
     # Automatically assigne state
     @api.depends('hospi_ids')
     def auto_state(self):

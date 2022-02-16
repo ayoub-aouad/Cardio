@@ -12,4 +12,5 @@ access_osi_diagnostics,access_osi_diagnostics,model_osi_diagnostics,hospitalisat
 access_osi_tags,access_osi_tags,model_osi_tags,hospitalisation.group_hospital_visualisation,1,1,1,1
 access_osi_stages,access_osi_stages,model_osi_stages,hospitalisation.group_hospital_visualisation,1,1,1,1
 access_osi_region,access_osi_region,model_osi_region,hospitalisation.group_hospital_visualisation,1,1,1,1
+access_osi_rapport,access_osi_rapport,model_osi_rapport,,1,1,1,1
 

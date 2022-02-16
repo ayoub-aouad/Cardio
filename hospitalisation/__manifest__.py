@@ -28,6 +28,7 @@
         'views/osi_tags.xml',
         'views/osi_stages.xml',
         'views/osi_region.xml',
+        'wizard/rapport.xml',
         'views/osi_hospitalisation.xml',
         'views/res_config.xml',
         'views/menuitem.xml',
