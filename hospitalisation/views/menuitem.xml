@@ -5,8 +5,7 @@
         <menuitem name="Configuration" sequence="20" id="configuration_menu" parent="hospitalisation_menu"/>
         <menuitem
             id="osi_hospitalisation_menu"
-            name="Hospitalisation"
-            action="osi_hospitalisation_action"
+            name="Les lits"
             parent="hospitalisation_menu"
             sequence="10"/>
         
@@ -25,10 +24,17 @@
             sequence="20"/>
 
         <menuitem
-            id="osi_lits_menu"
-            name="Lits"
-            action="osi_lits_action"
-            parent="configuration_menu"
+            id="osi_lits_menu_1"
+            name="Lits par disponibilité"
+            action="osi_lits_action_1"
+            parent="osi_hospitalisation_menu"
+            sequence="30"/>
+
+        <menuitem
+            id="osi_lits_menu_2"
+            name="Lits par durée"
+            action="osi_lits_action_2"
+            parent="osi_hospitalisation_menu"
             sequence="30"/>
 
         <menuitem 

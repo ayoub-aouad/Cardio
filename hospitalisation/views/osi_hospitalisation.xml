@@ -12,8 +12,15 @@
                 </header>
                 <sheet string="Hospitalisation">
                     <div name="button_box" class="oe_button_box">
-                        <button name="%(rapport_action)d" class="oe_stat_button" icon="fa-file-o" type="action" string="Rapport" 
-                            context="{'default_hospi_id': active_id}"></button>
+                        <button name="%(rapport_action)d" 
+                            icon="fa-file-o" 
+                            type="action" 
+                            class="oe_stat_button"
+                            context="{'default_hospi_id': active_id}" 
+                            domain="{'hospi_id': active_id}" 
+                            help="shows all the repports related to this hospitalisation" >
+                            <field name="repports_count" widget="statinfo" string="Rapport" />
+                        </button>
                     </div>
                 
                     <div class="oe_title pr-0">
@@ -44,17 +51,6 @@
                         </group>
                     </group>
                     <field name="description"/>
-                    <notebook>
-                        <page string="Rapports">
-                            <field name="rapport_ids" >
-                                <tree create="false">
-                                    <field name="medicin_id"/>
-                                    <field name="date"/>
-                                    <field name="text"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
                 </sheet>
                 <div class="oe_chatter" name="oe_chatter">
                     <field name="message_follower_ids"/>
@@ -144,7 +140,7 @@
     <record id="osi_hospitalisation_action" model="ir.actions.act_window">
         <field name="name">Hospitalisation</field>
         <field name="res_model">osi.hospitalisation</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
     <!-- Search -->
     <record id="view_osi_hospitalisation_filter" model="ir.ui.view">

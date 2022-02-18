@@ -38,7 +38,7 @@ class Hospitalisation(models.Model):
 
     # rapport
     rapport_ids = fields.One2many(string='Rapport',comodel_name='osi.rapport',inverse_name='hospi_id' )
-    
+    repports_count  = fields.Integer(string='Counter', compute='_compute_count_all')
     # Stages 
     stage_id = fields.Many2one(string='Stages',default=lambda self: self.env['osi.stages'].search([('id','!=',False)],order='id asc', limit=1).id, comodel_name='osi.stages', copy=False, group_expand='_read_group_stage_ids')
     # This method fixes stages inside kanban view
@@ -52,6 +52,12 @@ class Hospitalisation(models.Model):
         # perform search
         stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)
+
+    # Compute repports 
+    def _compute_count_all(self):
+        repports = self.env['osi.rapport']
+        for record in self:
+            record.repports_count = repports.search_count([('hospi_id', '=', record.id)])
 
     # Compute days number
     @api.depends('start_date','end_date')
@@ -92,20 +98,20 @@ class Hospitalisation(models.Model):
                 rec.is_red = False
 
     # Changing Lits Stages
-    @api.onchange('lits_id')
-    def onchange_lits_ids(self):
-        for rec in self:
-            if rec.lits_id:
-                self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'used'})
+    # @api.onchange('lits_id')
+    # def onchange_lits_ids(self):
+    #     for rec in self:
+    #         if rec.lits_id:
+    #             self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'used'})
     
-    @api.onchange('stage_id')
-    def remove_hospi_ids_from_lits(self):
-        for rec in self:
-            stage = self.env['osi.stages'].search([('id','!=',False)],order='id desc', limit=1)
-            if rec.stage_id.id == stage.id:
-                self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'free',
-                'patient_id':False,
-                'diagnostics_id':False,})
+    # @api.onchange('stage_id')
+    # def remove_hospi_ids_from_lits(self):
+    #     for rec in self:
+    #         stage = self.env['osi.stages'].search([('id','!=',False)],order='id desc', limit=1)
+    #         if rec.stage_id.id == stage.id:
+    #             self.env['osi.lits'].search([('id','=',rec.lits_id.id)]).write({'kanban_state':'free',
+    #             'patient_id':False,
+    #             'diagnostics_id':False,})
 
 class Diagnostics(models.Model):
     _name = 'osi.diagnostics'
@@ -132,10 +138,8 @@ class Lits(models.Model):
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner',compute='patient_assignement',store=True)
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',compute='patient_assignement',store=True)
     duration = fields.Integer(string='Durée de séjour', compute='patient_assignement', store=True)
-
-
+    is_red  = fields.Boolean(default=False,compute='background_changer',store=True)
     hospi_ids = fields.One2many('osi.hospitalisation', 'lits_id')
-    
     # Automatically assigne state
     @api.depends('hospi_ids')
     def auto_state(self):
@@ -143,8 +147,18 @@ class Lits(models.Model):
             if rec.hospi_ids:
                 rec.kanban_state = 'used'
 
+    @api.depends('duration')
+    def background_changer(self):
+        for rec in self:
+            params = self.env['ir.config_parameter'].sudo()
+            max_duree = int(params.get_param('hospitalisation.max_duration'))
+            if rec.duration >= max_duree:
+                rec.is_red = True
+            else:
+                rec.is_red = False
+
     # Automatically assigne Patient
-    @api.depends('hospi_ids')
+    @api.depends('hospi_ids','hospi_ids.end_date')
     def patient_assignement(self):
         for rec in self:
             if rec.hospi_ids:

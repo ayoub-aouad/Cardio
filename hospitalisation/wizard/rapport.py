@@ -6,13 +6,13 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from dateutil.relativedelta import relativedelta
 
 
-class Rapport(models.TransientModel):
+class Rapport(models.Model):
     _name = 'osi.rapport'
 
     medicin_id = fields.Many2one(
-        'res.partner',string='Médecins',
+        'res.partner',string='Médecins',required=True, 
         )
     hospi_id = fields.Many2one(string='Hospitalisation', comodel_name='osi.hospitalisation')
     
-    text = fields.Text(string='Rapport')
-    date = fields.Datetime(string='Date de rapport')
+    text  = fields.Html(string='Rapport',required=True, )
+    date = fields.Datetime(string='Date de rapport',required=True, )

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <record id="osi_lits_form" model="ir.ui.view">
+    <record id="osi_lits_form" model="ir.ui.view">
             <field name="name">osi.lits.form</field>
             <field name="model">osi.lits</field>
             <field name="arch" type="xml">
@@ -26,11 +26,12 @@
                                 <field name="patient_id" />
                                 <field name="diagnostics_id" />
                                 <field name="duration"/>
+                                <field name="is_red" invisible="1" />
                             </group>
                         </group>
                         <notebook>
                             <page string="Les hospitalisations">
-                                <field name="hospi_ids"/>
+                                <field name="hospi_ids" context="{'default_lits_id': active_id}"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -57,7 +58,9 @@
             </field>
         </record>
 
-        <record id="osi_lits_view_kanban" model="ir.ui.view">
+        <!-- kanban 1 -->
+
+        <record id="osi_lits_view_kanban_1" model="ir.ui.view">
             <field name="name">osi.lits.view.kanban</field>
             <field name="model">osi.lits</field>
             <field name="arch" type="xml">
@@ -75,6 +78,7 @@
                                     </strong>
                                     <ul>                            
                                         <li>Chambre : <field name="room"/></li>
+                                        <li>Médecins : <field name="medicins_ids"/></li>
                                         <li>Patient : <field name="patient_id"/></li>
                                         <li>Diagnostique : <field name="diagnostics_id"/></li>
                                         <li class="d-flex flex-row justify-content-between">
@@ -94,6 +98,7 @@
                                     </strong>
                                     <ul>                            
                                         <li>Chambre : <field name="room"/></li>
+                                        <li>Médecins : <field name="medicins_ids"/></li>
                                         <li>Patient : <field name="patient_id"/></li>
                                         <li>Diagnostique : <field name="diagnostics_id"/></li>
                                         <li class="d-flex flex-row justify-content-between">
@@ -113,6 +118,65 @@
                                 </strong>
                                 <ul>                            
                                     <li>Chambre : <field name="room"/></li>
+                                    <li>Médecins : <field name="medicins_ids"/></li>
+                                    <li>Patient : <field name="patient_id"/></li>
+                                    <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                    <li class="d-flex flex-row justify-content-between">
+                                        Secteur : <field name="sector"/>
+                                        Statut : <field name="kanban_state"/>
+                                        Durée : <field name="duration"/>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- kanban 2 -->
+
+        <record id="osi_lits_view_kanban_2" model="ir.ui.view">
+            <field name="name">osi.lits.view.kanban</field>
+            <field name="model">osi.lits</field>
+            <field name="arch" type="xml">
+                <kanban>
+                <field name="is_red" />
+                <field name="kanban_state"/>
+                    <progressbar field="kanban_state" colors='{"free": "success", "blocked": "danger", "used": "warning"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757">
+                                <div class="oe_kanban_details"  >
+                                <strong>
+                                <h4 class="d-flex flex-row ">
+                                <field name="name" />
+                                </h4>
+                                </strong>
+                                <ul>                            
+                                    <li>Chambre : <field name="room"/></li>
+                                    <li>Médecins : <field name="medicins_ids"/></li>
+                                    <li>Patient : <field name="patient_id"/></li>
+                                    <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                    <li class="d-flex flex-row justify-content-between">
+                                        Secteur : <field name="sector"/>
+                                        Statut : <field name="kanban_state"/>
+                                        Durée : <field name="duration"/>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b">
+                                <div class="oe_kanban_details"  >
+                                <strong>
+                                <h4 class="d-flex flex-row ">
+                                <field name="name" />
+                                </h4>
+                                </strong>
+                                <ul>                            
+                                    <li>Chambre : <field name="room"/></li>
+                                    <li>Médecins : <field name="medicins_ids"/></li>
                                     <li>Patient : <field name="patient_id"/></li>
                                     <li>Diagnostique : <field name="diagnostics_id"/></li>
                                     <li class="d-flex flex-row justify-content-between">
@@ -143,11 +207,21 @@
             </field>
         </record>
 
-        <!-- Action -->
-        <record id="osi_lits_action" model="ir.actions.act_window">
+        <!-- Action 1 -->
+        <record id="osi_lits_action_1" model="ir.actions.act_window">
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
-            <field name="context">{'group_by': ['kanban_state']}</field>
+            <field name="context">{'group_by': ['room']}</field>
             <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="osi_lits_view_kanban_1"/>
+        </record>
+
+        <!-- Action 2 -->
+        <record id="osi_lits_action_2" model="ir.actions.act_window">
+            <field name="name">Lits</field>
+            <field name="res_model">osi.lits</field>
+            <field name="context">{'group_by': ['room']}</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="osi_lits_view_kanban_2"/>
         </record>
 </odoo>

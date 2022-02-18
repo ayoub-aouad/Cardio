@@ -10,12 +10,15 @@
                         <group>
                             <group>
                                 <field name="medicin_id" domain="[('is_medicins', '=',True) ]"/>
-                                <field name="text"/>
                             </group>
                             <group>
                                 <field name="date"/>
                                 <field name="hospi_id" invisible="1"/>
                             </group>
+
+                        </group>
+                        <group>
+                            <field name="text" widget="html"/>
                         </group>
                     </sheet>
                 </form>
@@ -26,7 +29,7 @@
             <field name="name">rapport.tree</field>
             <field name="model">osi.rapport</field>
             <field name="arch" type="xml">
-                <tree string="">
+                <tree string="Rapports">
                     <field name="medicin_id"/>
                     <field name="date"/>
                     <field name="text"/>
@@ -35,12 +38,10 @@
         </record>
 
         <record id="rapport_action" model="ir.actions.act_window">
-            <field name="name">Rapport</field>
+            <field name="name">Rapports</field>
             <field name="res_model">osi.rapport</field>
-            <field name="type">ir.actions.act_window</field>
+            <field name="domain">[('hospi_id','=',active_id)]</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="rapport_form"/>
-            <field name="target">new</field>
         </record>
     </data>
 </odoo>
