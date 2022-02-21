@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_hospital_1" model="res.groups">
+        <field name="name">UMH</field>
+    </record>
+
+    <record id="group_hospital_2" model="res.groups">
+        <field name="name">Stage à l'étranger</field>
+    </record>
+
+    <record id="group_hospital_3" model="res.groups">
+        <field name="name">Réanimation médicale Militaire</field>
+    </record>
+    
+    <record id="group_hospital_4" model="res.groups">
+        <field name="name">Réanimation médicale Ibnsina</field>
+    </record>
+
+    <record id="group_hospital_5" model="res.groups">
+        <field name="name">Médecine Interne Militaire</field>
+    </record>
+
+    <record id="group_hospital_6" model="res.groups">
+        <field name="name">Médecine Interne Cheikh Zayed</field>
+    </record>
+
+    <record id="group_hospital_7" model="res.groups">
+        <field name="name">Médecine Interne Avicenne</field>
+    </record>
+
+    <record id="group_hospital_8" model="res.groups">
+        <field name="name">Chirurgie Vasculaire Militaire</field>
+    </record>
+
+    <record id="group_hospital_9" model="res.groups">
+        <field name="name">Chirurgie Vasculaire Avicenne</field>
+    </record>
+
+    <record id="group_hospital_10" model="res.groups">
+        <field name="name">Cardiologie Pédiatrique HE</field>
+    </record>
+
+    <record id="group_hospital_11" model="res.groups">
+        <field name="name">Cardio Militaire</field>
+    </record>
+
+    <record id="group_hospital_12" model="res.groups">
+        <field name="name">Cardio B</field>
+    </record>
+
+    <record id="group_hospital_13" model="res.groups">
+        <field name="name">Cardio A</field>
+    </record>
+
+    <record id="group_hospital_14" model="res.groups">
+        <field name="name">CCV Militaire</field>
+    </record>
+
+    <record id="group_hospital_15" model="res.groups">
+        <field name="name">CCV B</field>
+    </record>
+
+    <record id="group_hospital_16" model="res.groups">
+        <field name="name">CCV A</field>
+    </record>
+
+    <record id="group_hospital_17" model="res.groups">
+        <field name="name">Autre CHU</field>
+    </record>
+
+    
+</odoo>
+

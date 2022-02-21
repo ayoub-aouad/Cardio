@@ -193,6 +193,64 @@
             </field>
         </record>
 
+        <!-- kanban 3 -->
+
+        <record id="osi_lits_view_kanban_3" model="ir.ui.view">
+            <field name="name">osi.lits.view.kanban</field>
+            <field name="model">osi.lits</field>
+            <field name="arch" type="xml">
+                <kanban>
+                <field name="is_red" />
+                <field name="kanban_state"/>
+                <progressbar field="is_red" colors='{is_red==False: "success", is_red==True: "danger"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757">
+                                <div class="oe_kanban_details"  >
+                                <strong>
+                                <h4 class="d-flex flex-row ">
+                                <field name="name" />
+                                </h4>
+                                </strong>
+                                <ul>                            
+                                    <li>Chambre : <field name="room"/></li>
+                                    <li>Médecins : <field name="medicins_ids"/></li>
+                                    <li>Patient : <field name="patient_id"/></li>
+                                    <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                    <li class="d-flex flex-row justify-content-between">
+                                        Secteur : <field name="sector"/>
+                                        Statut : <field name="kanban_state"/>
+                                        Durée : <field name="duration"/>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b">
+                                <div class="oe_kanban_details"  >
+                                <strong>
+                                <h4 class="d-flex flex-row ">
+                                <field name="name" />
+                                </h4>
+                                </strong>
+                                <ul>                            
+                                    <li>Chambre : <field name="room"/></li>
+                                    <li>Médecins : <field name="medicins_ids"/></li>
+                                    <li>Patient : <field name="patient_id"/></li>
+                                    <li>Diagnostique : <field name="diagnostics_id"/></li>
+                                    <li class="d-flex flex-row justify-content-between">
+                                        Secteur : <field name="sector"/>
+                                        Statut : <field name="kanban_state"/>
+                                        Durée : <field name="duration"/>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
         <!-- Search -->
         <record id="view_osi_lits_filter" model="ir.ui.view">
             <field name="name">osi.lits.select</field>
@@ -200,8 +258,8 @@
             <field name="arch" type="xml">
                 <search string="Search Lits">
                     <group expand="0" string="Group By">
-                        <filter string="Chambre" name="Chambre" context="{'group_by': 'room'}"/>
-                        <filter string="Secteur" name="Secteur" context="{'group_by': 'sector'}"/>
+                        <filter string="Chambre" name="group_room" context="{'group_by': 'room'}"/>
+                        <filter string="Secteur" name="group_sector" context="{'group_by': 'sector'}"/>
                     </group>
                 </search>
             </field>
@@ -211,7 +269,7 @@
         <record id="osi_lits_action_1" model="ir.actions.act_window">
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
-            <field name="context">{'group_by': ['room']}</field>
+            <field name="context">{'search_default_group_room': 1}</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="osi_lits_view_kanban_1"/>
         </record>
@@ -220,8 +278,19 @@
         <record id="osi_lits_action_2" model="ir.actions.act_window">
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
-            <field name="context">{'group_by': ['room']}</field>
+            <field name="context">{'search_default_group_room': 1}</field>
+            <field name="domain">['|',('is_red','=', True),('kanban_state','=', 'used')]</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="osi_lits_view_kanban_2"/>
+        </record>
+
+        <!-- Action 3 -->
+        <record id="osi_lits_action_3" model="ir.actions.act_window">
+            <field name="name">Lits</field>
+            <field name="res_model">osi.lits</field>
+            <field name="context">{'search_default_group_room': 1}</field>
+            <field name="domain">['|',('is_red','=', True),('kanban_state','=', 'used')]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="osi_lits_view_kanban_3"/>
         </record>
 </odoo>

@@ -1,11 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_osi_hospitalisation,hospitalisation_cardio_b,model_osi_hospitalisation,hospitalisation.group_cardio_b,1,1,1,1
-access_osi_lits,lits_cardio_b,model_osi_lits,hospitalisation.group_cardio_b,1,1,1,1
-access_osi_diagnostics,diagnostics_cardio_b,model_osi_diagnostics,hospitalisation.group_cardio_b,1,1,1,1
-access_osi_tags,tags_cardio_b,model_osi_tags,hospitalisation.group_cardio_b,1,1,1,1
-access_osi_stages,stages_cardio_b,model_osi_stages,hospitalisation.group_cardio_b,1,1,1,1
-access_osi_region,region_cardio_b,model_osi_region,hospitalisation.group_cardio_b,1,1,1,1
-
 access_osi_hospitalisation,hospitalisation_manager,model_osi_hospitalisation,hospitalisation.group_hospital_manager,1,1,1,1
 access_osi_lits,lits_manager,model_osi_lits,hospitalisation.group_hospital_manager,1,1,1,1
 access_osi_diagnostics,diagnostics_manager,model_osi_diagnostics,hospitalisation.group_hospital_manager,1,1,1,1
