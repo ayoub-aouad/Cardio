@@ -37,12 +37,12 @@
             parent="osi_hospitalisation_menu"
             sequence="30"/>
         
-        <!-- <menuitem
+        <menuitem
             id="osi_lits_menu_3"
             name="Lits par durée (2)"
             action="osi_lits_action_3"
             parent="osi_hospitalisation_menu"
-            sequence="30"/> -->
+            sequence="30"/>
 
         <menuitem 
         name="Tags" 

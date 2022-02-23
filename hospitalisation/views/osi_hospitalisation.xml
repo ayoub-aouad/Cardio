@@ -71,7 +71,7 @@
                 <field name="patient_id"/>
                 <field name="sexe"/>
                 <!-- <field name="region"/> -->
-                <field name="lits_id"/>
+                <field name="lits_id" force_save="1" invisible="1"/>
                 <field name="room"/>
                 <field name="sector"/>
                 <field name="diagnostics_id"/>

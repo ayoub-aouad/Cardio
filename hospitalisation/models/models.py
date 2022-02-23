@@ -27,7 +27,7 @@ class Hospitalisation(models.Model):
     # diagnostics 
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',required=True)
     # lits part 
-    lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',required=True,)
+    lits_id = fields.Many2one(string='Lit', comodel_name='osi.lits',)
     room  = fields.Char(string='Chambre',related='lits_id.room',readonly=False,store=True)
     sector  = fields.Char(string='Secteur',related='lits_id.sector', readonly=False,store=True)
     kanban_state = fields.Selection([
@@ -138,7 +138,7 @@ class Lits(models.Model):
     patient_id = fields.Many2one(string='Patient', comodel_name='res.partner',compute='patient_assignement',store=True)
     diagnostics_id = fields.Many2one(string='Diagnostique', comodel_name='osi.diagnostics',compute='patient_assignement',store=True)
     duration = fields.Integer(string='Durée de séjour', compute='patient_assignement', store=True)
-    is_red  = fields.Boolean(default=False,compute='background_changer',store=True)
+    is_red  = fields.Selection([('true', 'True'),('false', 'False')],default='false',compute='background_changer',store=True)
     hospi_ids = fields.One2many('osi.hospitalisation', 'lits_id')
     # Automatically assigne state
     @api.depends('hospi_ids')
@@ -153,9 +153,9 @@ class Lits(models.Model):
             params = self.env['ir.config_parameter'].sudo()
             max_duree = int(params.get_param('hospitalisation.max_duration'))
             if rec.duration >= max_duree:
-                rec.is_red = True
+                rec.is_red = 'true'
             else:
-                rec.is_red = False
+                rec.is_red = 'false'
 
     # Automatically assigne Patient
     @api.depends('hospi_ids','hospi_ids.end_date')

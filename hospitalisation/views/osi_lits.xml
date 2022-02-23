@@ -147,7 +147,7 @@
                     <progressbar field="kanban_state" colors='{"free": "success", "blocked": "danger", "used": "warning"}'/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value =='true'" style="background-color: #fa5757">
                                 <div class="oe_kanban_details"  >
                                 <strong>
                                 <h4 class="d-flex flex-row ">
@@ -167,7 +167,7 @@
                                 </ul>
                                 </div>
                             </div>
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value == 'false' " style="background-color: #33d45b">
                                 <div class="oe_kanban_details"  >
                                 <strong>
                                 <h4 class="d-flex flex-row ">
@@ -202,10 +202,10 @@
                 <kanban>
                 <field name="is_red" />
                 <field name="kanban_state"/>
-                <progressbar field="is_red" colors='{is_red==False: "success", is_red==True: "danger"}'/>
+                <progressbar field="is_red" colors='{"false": "success", "true": "danger"}'/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value" style="background-color: #fa5757">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value == 'true' " style="background-color: #fa5757">
                                 <div class="oe_kanban_details"  >
                                 <strong>
                                 <h4 class="d-flex flex-row ">
@@ -225,7 +225,7 @@
                                 </ul>
                                 </div>
                             </div>
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="!record.is_red.raw_value" style="background-color: #33d45b">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click" t-if="record.is_red.raw_value == 'false' " style="background-color: #33d45b">
                                 <div class="oe_kanban_details"  >
                                 <strong>
                                 <h4 class="d-flex flex-row ">
@@ -279,7 +279,7 @@
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
             <field name="context">{'search_default_group_room': 1}</field>
-            <field name="domain">['|',('is_red','=', True),('kanban_state','=', 'used')]</field>
+            <field name="domain">[('kanban_state','=', 'used')]</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="osi_lits_view_kanban_2"/>
         </record>
@@ -289,7 +289,7 @@
             <field name="name">Lits</field>
             <field name="res_model">osi.lits</field>
             <field name="context">{'search_default_group_room': 1}</field>
-            <field name="domain">['|',('is_red','=', True),('kanban_state','=', 'used')]</field>
+            <field name="domain">[('kanban_state','=', 'used')]</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="osi_lits_view_kanban_3"/>
         </record>
