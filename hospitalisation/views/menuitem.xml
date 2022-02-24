@@ -25,21 +25,21 @@
 
         <menuitem
             id="osi_lits_menu_1"
-            name="Lits par disponibilité"
+            name="Etats de service"
             action="osi_lits_action_1"
             parent="osi_hospitalisation_menu"
             sequence="30"/>
 
         <menuitem
             id="osi_lits_menu_2"
-            name="Lits par durée"
+            name="Liste des lits par durée"
             action="osi_lits_action_2"
             parent="osi_hospitalisation_menu"
             sequence="30"/>
         
         <menuitem
             id="osi_lits_menu_3"
-            name="Lits par durée (2)"
+            name="liste des lits par durée complete"
             action="osi_lits_action_3"
             parent="osi_hospitalisation_menu"
             sequence="30"/>
